@@ -26,25 +26,35 @@ app.get("/api/hello", function (req, res) {
 });
 
 // tests
+// alternative 1
+
 // alternative 2
-const isInvalidDate = (date) => date.toUTCString() === "Invalid Date";
+// note: test 7 and test 8 work if the route is "/api/:date" not "/api/:date?"
+const isInvalidDate = (date) => date.toUTCString() === "Invalid Date"; // check for invalid date (or should be not an object)
 
 app.get("/api/:date", (req, res) => {
+  // test 5 (?)
   let date = new Date(req.params.date);
   
+  // test 4
+  // change input to number if it is an object
   if (isInvalidDate(date)) date = new Date(+req.params.date);
 
+  // test 6
+  // handle invalid date string input
   if (isInvalidDate(date)) {
     res.json({ error: "Invalid Date" });
     return;
   }
 
+  // test 2, test 3, test 4
   res.json({
     unix: date.getTime(),
     utc: date.toUTCString()
   });
 });
 
+// test 7, test 8
 app.get("/api", (req, res) => {
   res.json({
     unix: new Date().getTime(),
