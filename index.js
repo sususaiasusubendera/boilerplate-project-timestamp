@@ -26,9 +26,10 @@ app.get("/api/hello", function (req, res) {
 });
 
 // tests
+// note: make the other alternative into a comment to use the other one
 // ALTERNATIVE 1
 app.get("/api/:date?", (req, res) => {
-  // take parameter
+  // take the parameter
   let reqString = req.params.date;
 
   // test 7, test 8
@@ -43,7 +44,7 @@ app.get("/api/:date?", (req, res) => {
     return;
   }
 
-  // Regex
+  // regex
   let regex1 = /^\d{4}-\d{2}-\d{2}$/; // yyyy-mm-dd
   let regex2 = /^\d+$/; // xyz...p
   let regex3 = /^\d{2}\s(January|February|March|April|May|June|July|August|September|October|November|December)\s\d{4}?/; // dd month yyyy
@@ -63,7 +64,7 @@ app.get("/api/:date?", (req, res) => {
     return;
   }
 
-  // handler for case 2
+  // handler for case regex 2
   // test 4
   if (reqString.match(regex2)) {
     let date = new Date(+reqString);
@@ -84,39 +85,40 @@ app.get("/api/:date?", (req, res) => {
   });
 });
 
+
 // ALTERNATIVE 2
-// // note: test 7 and test 8 work if the route is "/api/:date" not "/api/:date?"
-// const isInvalidDate = (date) => date.toUTCString() === "Invalid Date"; // check for invalid date (or should be not an object)
+// note: test 7 and test 8 work if the route is "/api/:date" not "/api/:date?"
+const isInvalidDate = (date) => date.toUTCString() === "Invalid Date"; // check for invalid date (or should be not an object)
 
-// app.get("/api/:date", (req, res) => {
-//   // test 5 (?)
-//   let date = new Date(req.params.date);
+app.get("/api/:date", (req, res) => {
+  // test 5 (?)
+  let date = new Date(req.params.date);
   
-//   // test 4
-//   // change input to number if it is an object
-//   if (isInvalidDate(date)) date = new Date(+req.params.date);
+  // test 4
+  // change input to number if it is an object
+  if (isInvalidDate(date)) date = new Date(+req.params.date);
 
-//   // test 6
-//   // handle invalid date string input
-//   if (isInvalidDate(date)) {
-//     res.json({ error: "Invalid Date" });
-//     return;
-//   }
+  // test 6
+  // handle invalid date string input
+  if (isInvalidDate(date)) {
+    res.json({ error: "Invalid Date" });
+    return;
+  }
 
-//   // test 2, test 3, test 4
-//   res.json({
-//     unix: date.getTime(),
-//     utc: date.toUTCString()
-//   });
-// });
+  // test 2, test 3, test 4
+  res.json({
+    unix: date.getTime(),
+    utc: date.toUTCString()
+  });
+});
 
-// // test 7, test 8
-// app.get("/api", (req, res) => {
-//   res.json({
-//     unix: new Date().getTime(),
-//     utc: new Date().toUTCString()
-//   });
-// });
+// test 7, test 8
+app.get("/api", (req, res) => {
+  res.json({
+    unix: new Date().getTime(),
+    utc: new Date().toUTCString()
+  });
+});
 
 
 
